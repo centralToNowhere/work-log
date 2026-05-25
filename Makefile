@@ -14,5 +14,8 @@ restart:
 down:
 	docker compose down --remove-orphans
 
+remove:
+	docker compose down -v --remove-orphans
+
 logs:
 	docker compose logs -f work-log-server
