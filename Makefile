@@ -1,0 +1,18 @@
+.PHONY: up reset restart down logs
+
+up:
+	docker compose up -d --build --force-recreate
+
+reset:
+	docker compose down -v --remove-orphans
+	docker compose up -d --build --force-recreate
+
+restart:
+	docker compose down --remove-orphans
+	docker compose up -d --build --force-recreate
+
+down:
+	docker compose down --remove-orphans
+
+logs:
+	docker compose logs -f work-log-server

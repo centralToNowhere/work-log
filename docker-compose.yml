@@ -1,0 +1,37 @@
+services:
+  work-log-postgres:
+    image: postgres:16-alpine
+    container_name: work-log-postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - db_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  work-log-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: work-log-server
+    env_file:
+      - .env
+    depends_on:
+      work-log-postgres:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_PORT}:3000"
+    volumes:
+      - ./server:/usr/src/app:delegated
+      - /usr/src/app/node_modules
+    command: sh -c "yarn run migrate && yarn run dev"
+    working_dir: /usr/src/app
+
+volumes:
+  db_postgres_data:
