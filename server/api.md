@@ -10,32 +10,42 @@ Base URL: `http://localhost:3000`
 
 Query params:
 
-| Param | Type | Required | Description |
-| --- | --- | --- | --- |
-| `date` | `string` | no | Дата в формате `YYYY-MM-DD` |
-| `dateSort` | `asc` / `desc` | no | Сортировка по `created_at`, default `desc` |
+| Param      | Type           | Required | Description                                |
+| ---------- | -------------- | -------- | ------------------------------------------ |
+| `date`     | `string`       | no       | Дата в формате `YYYY-MM-DD`                |
+| `dateSort` | `asc` / `desc` | no       | Сортировка по `created_at`, default `desc` |
+| `page`     | `number`       | no       | Номер страницы, default `1`                |
+| `pageSize` | `number`       | no       | Размер страницы, default `10`              |
 
 Example:
 
 ```http
-GET /works?date=2026-05-25&dateSort=desc
+GET /works?date=2026-05-25&dateSort=desc&page=1&pageSize=10
 ```
 
 Response `200`:
 
 ```json
-[
-  {
-    "id": 1,
-    "title": "Кладка перегородок",
-    "description": null,
-    "amount": 8,
-    "measureUnit": "hour",
-    "workerId": 1,
-    "workerFullName": "Иванов Алексей Сергеевич",
-    "created_at": "2026-05-25T15:13:15.294Z"
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Кладка перегородок",
+      "description": null,
+      "amount": 8,
+      "measureUnit": "hour",
+      "measureUnitValueSingularRu": "час",
+      "workerId": 1,
+      "workerFullName": "Иванов Алексей Сергеевич",
+      "created_at": "2026-05-25T15:13:15.294Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 10,
+    "total": 1
   }
-]
+}
 ```
 
 ### POST `/works`
@@ -50,6 +60,7 @@ Request body:
   "description": "Второй этаж",
   "amount": 10,
   "measureUnit": "m2",
+  "measureUnitValueSingularRu": "м²",
   "workerId": 1
 }
 ```
@@ -63,6 +74,7 @@ Response `201`:
   "description": "Второй этаж",
   "amount": 10,
   "measureUnit": "m2",
+  "measureUnitValueSingularRu": "м²",
   "workerId": 1,
   "workerFullName": "Иванов Алексей Сергеевич",
   "created_at": "2026-05-25T15:13:15.294Z"
@@ -136,6 +148,52 @@ Response `201`:
   "lastName": "Иванов",
   "patronymic": "Иванович",
   "fullName": "Иванов Иван Иванович"
+}
+```
+
+`/workers` is also available as an alias for worker-related endpoints:
+
+- `GET /workers`
+- `POST /workers`
+
+## Measure Units
+
+### GET `/measureUnits`
+
+Получить список единиц измерения.
+
+Response `200`:
+
+```json
+[
+  {
+    "id": 1,
+    "code": "m2",
+    "valueSingularRu": "м²"
+  }
+]
+```
+
+### POST `/measureUnits`
+
+Создать единицу измерения.
+
+Request body:
+
+```json
+{
+  "code": "kg",
+  "valueSingularRu": "килограмм"
+}
+```
+
+Response `201`:
+
+```json
+{
+  "id": 6,
+  "code": "kg",
+  "valueSingularRu": "килограмм"
 }
 ```
 

@@ -4,29 +4,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
+const cors_1 = __importDefault(require("@fastify/cors"));
 const router_1 = __importDefault(require("./router"));
 const db_1 = __importDefault(require("./db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const error_app_1 = __importDefault(require("./errors/error.app"));
 dotenv_1.default.config();
 const fastify = (0, fastify_1.default)({
-    logger: true
+    logger: true,
+});
+fastify.register(cors_1.default, {
+    origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
 });
 fastify.setErrorHandler((error, request, reply) => {
     request.log.error({ err: error }, 'Request failed');
     if (error instanceof error_app_1.default) {
         return reply.status(error.statusCode).send({
-            message: error.message
+            message: error.message,
         });
     }
     if (!error.statusCode || error.statusCode >= 500) {
         const appError = new error_app_1.default();
         return reply.status(appError.statusCode).send({
-            message: appError.message
+            message: appError.message,
         });
     }
     return reply.status(error.statusCode).send({
-        message: error.message
+        message: error.message,
     });
 });
 fastify.register(db_1.default);
@@ -37,5 +43,5 @@ if (!port) {
 }
 fastify.listen({
     port: Number(port),
-    host: '0.0.0.0'
+    host: '0.0.0.0',
 });

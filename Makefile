@@ -1,4 +1,7 @@
-.PHONY: up reset restart down logs
+.PHONY: env up reset restart down logs
+
+env:
+	@test -f .env || cp .env.example .env
 
 up:
 	docker compose up -d --build --force-recreate

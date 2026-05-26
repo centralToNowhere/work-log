@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import { FastifyError } from 'fastify';
+import cors from '@fastify/cors';
 import router from './router';
 import dbConnector from './db';
 import dotenv from 'dotenv';
@@ -8,30 +9,36 @@ import AppError from './errors/error.app';
 dotenv.config();
 
 const fastify = Fastify({
-    logger: true
-})
+  logger: true,
+});
+
+fastify.register(cors, {
+  origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+});
 
 fastify.setErrorHandler((error: FastifyError, request, reply) => {
-    request.log.error({ err: error }, 'Request failed');
+  request.log.error({ err: error }, 'Request failed');
 
-    if (error instanceof AppError) {
-        return reply.status(error.statusCode).send({
-            message: error.message
-        });
-    }
-
-    if (!error.statusCode || error.statusCode >= 500) {
-        const appError = new AppError();
-
-        return reply.status(appError.statusCode).send({
-            message: appError.message
-        });
-    }
-
+  if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
-        message: error.message
+      message: error.message,
     });
-})
+  }
+
+  if (!error.statusCode || error.statusCode >= 500) {
+    const appError = new AppError();
+
+    return reply.status(appError.statusCode).send({
+      message: appError.message,
+    });
+  }
+
+  return reply.status(error.statusCode).send({
+    message: error.message,
+  });
+});
 
 fastify.register(dbConnector);
 fastify.register(router);
@@ -39,10 +46,10 @@ fastify.register(router);
 const port = process.env.BACKEND_PORT;
 
 if (!port) {
-  throw new Error('BACKEND_PORT is not defined')
+  throw new Error('BACKEND_PORT is not defined');
 }
 
 fastify.listen({
-    port: Number(port),
-    host: '0.0.0.0'
-})
+  port: Number(port),
+  host: '0.0.0.0',
+});

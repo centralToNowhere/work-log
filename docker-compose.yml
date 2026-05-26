@@ -33,5 +33,22 @@ services:
     command: sh -c "yarn run migrate && yarn run dev"
     working_dir: /usr/src/app
 
+  work-log-front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: work-log-front
+    env_file:
+      - .env
+    depends_on:
+      - work-log-server
+    ports:
+      - "${FRONTEND_PORT}:5173"
+    volumes:
+      - ./front:/usr/src/app:delegated
+      - /usr/src/app/node_modules
+    command: yarn run dev --host 0.0.0.0
+    working_dir: /usr/src/app
+
 volumes:
   db_postgres_data:

@@ -8,8 +8,8 @@ class WorkService {
     constructor(dataProvider) {
         this.dataProvider = dataProvider;
     }
-    async getWorks(sort, filter) {
-        return this.dataProvider.fetchAll(sort, filter);
+    async getWorks(sort, filter, pagination) {
+        return this.dataProvider.fetchAll(sort, filter, pagination);
     }
     async createWork(work) {
         return this.dataProvider.create(work);

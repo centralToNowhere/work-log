@@ -1,0 +1,13 @@
+@use 'styles/funcs' as fn;
+
+.container {
+  padding: fn.pxToRem(20);
+  background-color: var(--color-background-default);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}

@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+echo "Checking front..."
+cd front
+yarn format:check
+yarn lint
+
+echo "Checking server..."
+cd ../server
+yarn format:check
+yarn lint

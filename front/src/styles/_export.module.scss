@@ -1,0 +1,7 @@
+@use 'variables' as vars;
+
+:export {
+  mobile: vars.$mobile;
+  tablet: vars.$tablet;
+  desktop: vars.$desktop;
+}

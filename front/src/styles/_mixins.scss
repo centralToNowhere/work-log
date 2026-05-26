@@ -1,0 +1,45 @@
+@use 'sass:map';
+@use 'variables' as vars;
+@use 'funcs' as fn;
+
+@mixin mobile {
+  @media only screen and (max-width: #{vars.$tablet - 1}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (min-width: vars.$tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: vars.$desktop) and (hover: hover) {
+    @content;
+  }
+}
+
+@mixin wide-screen {
+  @media only screen and (min-width: vars.$wide-screen) {
+    @content;
+  }
+}
+
+@mixin setFont($sizePx, $weight: false, $color: false) {
+  font-size: fn.pxToRem($sizePx);
+
+  @if $weight {
+    font-weight: map.get(vars.$font-weights, $weight);
+  }
+
+  @if $color {
+    color: $color;
+  }
+}
+
+@mixin boxShadowContainer {
+  box-shadow:
+    0px 1px 5.7px rgba(0, 0, 0, 0.04),
+    0px 2px 13.2px rgba(0, 0, 0, 0.06);
+}

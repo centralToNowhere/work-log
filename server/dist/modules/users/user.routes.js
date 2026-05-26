@@ -8,13 +8,17 @@ const user_service_1 = __importDefault(require("./user.service"));
 const usersRouter = (fastify) => {
     const dataProvider = new user_dataProvider_1.default(fastify.pg);
     const service = new user_service_1.default(dataProvider);
-    fastify.get('/users', async () => {
+    const getUsers = async () => {
         return service.getUsers();
-    });
-    fastify.post('/users', async (req, res) => {
+    };
+    const createUser = async (req, res) => {
         const user = await service.createUser(req.body);
         res.status(201);
         return user;
-    });
+    };
+    fastify.get('/users', getUsers);
+    fastify.get('/workers', getUsers);
+    fastify.post('/users', createUser);
+    fastify.post('/workers', createUser);
 };
 exports.default = usersRouter;

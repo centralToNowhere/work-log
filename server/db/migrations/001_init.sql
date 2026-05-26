@@ -20,17 +20,19 @@ WHERE NOT EXISTS (SELECT 1 FROM workers);
 
 CREATE TABLE IF NOT EXISTS measure_units (
   id SERIAL PRIMARY KEY,
-  code TEXT NOT NULL UNIQUE
+  code TEXT NOT NULL UNIQUE,
+  value_singular_ru TEXT NOT NULL
 );
 
-INSERT INTO measure_units (code)
+INSERT INTO measure_units (code, value_singular_ru)
 VALUES
-  ('m2'),
-  ('m3'),
-  ('hour'),
-  ('minute'),
-  ('piece')
-ON CONFLICT (code) DO NOTHING;
+  ('m2', 'м²'),
+  ('m3', 'м³'),
+  ('hour', 'час'),
+  ('minute', 'минута'),
+  ('piece', 'штука')
+ON CONFLICT (code) DO UPDATE
+SET value_singular_ru = EXCLUDED.value_singular_ru;
 
 CREATE TABLE IF NOT EXISTS works (
   id SERIAL PRIMARY KEY,

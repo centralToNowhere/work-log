@@ -27,7 +27,7 @@ async function dbConnector(fastify) {
         throw new Error('Database port is not set!');
     }
     fastify.register(postgres_1.default, {
-        connectionString: `postgres://${user}:${password}@${host}:${port}/${dbName}`
+        connectionString: `postgres://${user}:${password}@${host}:${port}/${dbName}`,
     });
     fastify.addHook('onReady', async () => {
         let client;
@@ -37,7 +37,9 @@ async function dbConnector(fastify) {
         }
         catch (error) {
             fastify.log.error({ err: error }, 'Database connection failed');
-            throw new Error('Database connection failed');
+            const connectionError = new Error('Database connection failed');
+            connectionError.cause = error;
+            throw connectionError;
         }
         finally {
             client?.release();

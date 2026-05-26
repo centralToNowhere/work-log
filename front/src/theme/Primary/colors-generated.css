@@ -1,0 +1,27 @@
+:root {
+  --color-primary: #242EDB;
+  --color-accent: #242EDB;
+  --color-secondary: #FFFFFF;
+  --color-text-primary: #232323;
+  --color-text-secondary: #FFFFFF;
+  --color-text-muted: #B2B3B9;
+  --color-background-default: #FFFFFF;
+  --color-background-light: #F9F9F9;
+  --color-background-gray: #eef2fa;
+  --color-background-primary: #d0d0d0;
+  --color-border-light: #ECECEB;
+  --color-border-muted: #EDEDED;
+  --color-border-divider: #EBEBEB;
+  --color-status-danger: #e63946;
+  --color-gray-light: #f9f9f9;
+  --color-gray-lighter: #f3f3f3;
+  --color-gray-lightest: #fafafa;
+  --color-gray-medium: #e2e2e2;
+  --color-gray-mediumLight: #e0e0e0;
+  --color-gray-mediumDark: #9c9c9c;
+  --color-gray-dark: #6c6c6c;
+  --color-button-accentBorder: #367AFF;
+  --color-button-accentHoverDark: #1a22b8;
+  --color-button-buttonHoverDark: #2e5ae6;
+  --color-button-primaryDark: #1c24b4;
+}

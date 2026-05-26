@@ -27,11 +27,7 @@ class UserDataProvider {
                 last_name AS "lastName",
                 patronymic,
                 concat_ws(' ', last_name, first_name, patronymic) AS "fullName";
-        `, [
-            user.firstName,
-            user.lastName,
-            user.patronymic || '',
-        ]);
+        `, [user.firstName, user.lastName, user.patronymic || '']);
         return result.rows[0];
     }
 }
