@@ -19,7 +19,7 @@ docker ps
 ```bash
 make env
 ```
-Запусти контейнеры
+Запустить контейнеры
 
 ```bash
 make up
